@@ -21,20 +21,29 @@
 ## 两张图片看懂Forward Warping和Inverse Warping
 
 ### Forward Warping
-![Forward Warping Image](https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/forward_warping_implement.png)
+<div align=center>
+<img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/forward_warping_implement.png">
+</div>
+<br/>
 
-`Forward Warping`的原理：遍历`source image`中的每个点`p_source`，乘以从`source image`到`destination image`的`affine transform matrix`，将其投影到`destination image`中得到`p_destination`，如果`p_destination`的坐标不是整数，则进行四舍五入取整，这必然会产生问题：`destination image`中有的位置没有从`source image`中投影过来的点，有的位置有多个从`source image`中投影过来的点，所以会产生很多空洞，产生类似波纹的效果
+* `Forward Warping`的原理：遍历`source image`中的每个点`p_source`，乘以从`source image`到`destination image`的`affine transform matrix`，将其投影到`destination image`中得到`p_destination`，如果`p_destination`的坐标不是整数，则进行四舍五入取整，这必然会产生问题：`destination image`中有的位置没有从`source image`中投影过来的点，有的位置有多个从`source image`中投影过来的点，所以会产生很多空洞，产生类似波纹的效果
 
 ### Inverse Warping
-![Inverse Warping Image](https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/inverse_warping_implement.png)
+<div align=center>
+<img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/inverse_warping_implement.png">
+</div>
+<br/>
 
-`Inverse Warping`的原理：遍历`destination image`中的每个点`p_destination`，乘以`destination image`到`source image`的`affine transform matrix`，得这个点在`source image`中的对应点`p_source`，令`p_destination`的像素值等于`p_source`的值，如果`p_source`的坐标不是整数，则采用**插值逼近**的方法进行近似，因此不会产生上文提到的`Forward Warping`的问题
+* `Inverse Warping`的原理：遍历`destination image`中的每个点`p_destination`，乘以`destination image`到`source image`的`affine transform matrix`，得这个点在`source image`中的对应点`p_source`，令`p_destination`的像素值等于`p_source`的值，如果`p_source`的坐标不是整数，则采用**插值逼近**的方法进行近似，因此不会产生上文提到的`Forward Warping`的问题
 
+---
 ## OpenCV中的`warpAffine`函数
 
 * 由下图中列出的公式可知，OpenCV中的`warpAffine`的实现是基于`Inverse Warping`的
-
-![OpenCV warpAffine](https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/opencv-doc-warpAffine.png)
+<div align=center>
+<img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/opencv-doc-warpAffine.png">
+</div>
+<br/>
 
 说明：
 * 当`WARP_INVERSE_MAP`被指定时，函数的输入参数`M`表示从`destination image`到`source image`的**2×3**的`transform matrix`,可以直接遍历`destination image`中的每个像素点，代入上图中的公式进行`affine transform`
@@ -44,8 +53,10 @@
 
 * `flages`表示**插值方式**与`WARP_INVERSE_MAP`的组合，默认为 `flags=cv2.INTER_LINEAR`，表示线性插值，此外还有：`cv2.INTER_NEAREST`（最近邻插值）,`cv2.INTER_AREA`（区域插值）,`cv2.INTER_CUBIC`（三次样条插值）和`cv2.INTER_LANCZOS4`（Lanczos插值）
 
-![OpenCV warpAffine](https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/WARP_INVERSE_MAP.png)
-
+<div align=center>
+<img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/WARP_INVERSE_MAP.png">
+</div>
+<br/>
 
 * `borderValue`表示边界填充值，默认值为0，因此可能出现“黑边”现象
 
