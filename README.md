@@ -13,7 +13,7 @@
 
   如下图所示，可以明显的看出正向变换的结果产生了大量空洞，并且在实现过程中会有像素的重叠，使`image warping`的结果不理想，而反向变换的图像则不会产生这种问题。
 
-<div style="text-align: center;">
+<div align=center>
 <img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/results/forward_warp_vs_inverse_warp.png"/>
 </div>
 
