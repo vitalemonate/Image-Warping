@@ -54,4 +54,4 @@ plt.title('inverse warped picture')
 
 plt.tight_layout()
 plt.savefig(fname="results/forward_warp_vs_inverse_warp.png",dpi=100)
-plt.show()
+plt.show() 
