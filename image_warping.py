@@ -21,8 +21,8 @@ inverse_warp_pic = np.zeros_like(img)
 for d in range(depth):
     for v in range(rows):
         for u in range(cols):
-            x = int(M[0,0]*u + M[0,1]*v + M[0,2])
-            y = int(M[1,0]*u + M[1,1]*v + M[1,2])
+            x = int(round(M[0,0]*u + M[0,1]*v + M[0,2]))
+            y = int(round(M[1,0]*u + M[1,1]*v + M[1,2]))
             if x < 0 or x >= cols or y < 0 or y >= rows:
                 continue
             forward_warp_pic[y,x,d] = img[v,u,d]
