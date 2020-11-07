@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 import cv2
 import numpy as np
 
-img = cv2.imread('lena.jpg')
+img = cv2.imread('pictures/lena.jpg')
 rows, cols, depth = img.shape
 
 pts1 = np.float32([[50, 50],[200, 50],[50,200]])
@@ -52,5 +52,6 @@ plt.imshow(inverse_warp_pic)
 plt.plot(pts2[:, 0], pts2[:, 1], "bo")
 plt.title('inverse warped picture')
 
-plt.savefig(fname="forward_warp_vs_inverse_warp.png")
+plt.tight_layout()
+plt.savefig(fname="results/forward_warp_vs_inverse_warp.png",dpi=100)
 plt.show()
