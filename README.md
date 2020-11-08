@@ -49,7 +49,7 @@
 * 当**WARP_INVERSE_MAP**被指定时，函数的输入参数`M`表示从`destination image`到`source image`的**2×3**的`transform matrix`,可以直接遍历`destination image`中的每个像素点，代入上图中的公式进行`affine transform`
 
 
-* 当**WARP_INVERSE_MAP**没有被指定时，`M`表示从`source image`到`destination image`的`affine matrix`，在函数内部首先会调用另一个函数**`invertAffineTransform`**求出`M`的逆，仍然是**2×3**的`affine matrix`,然后再代入上图中的公式进行`affine transform`
+* 当**WARP_INVERSE_MAP**没有被指定时，`M`表示从`source image`到`destination image`的`affine matrix`，在函数内部首先会调用另一个函数**invertAffineTransform**求出`M`的逆，仍然是**2×3**的`affine matrix`,然后再代入上图中的公式进行`affine transform`
 
 * `flages`表示**插值方式**与**WARP_INVERSE_MAP**的组合，默认为 `flags=cv2.INTER_LINEAR`，表示线性插值，此外还有：`cv2.INTER_NEAREST`（最近邻插值）,`cv2.INTER_AREA`（区域插值）,`cv2.INTER_CUBIC`（三次样条插值）和`cv2.INTER_LANCZOS4`（Lanczos插值）
 
@@ -61,7 +61,7 @@
 * `borderValue`表示边界填充值，默认值为0，因此可能出现“黑边”现象
 
 
-* 一般情况下**cv2.warpAffine(img,M,(rows,cols))**即可完成基本的`affine transform `
+* 一般情况下<b>`cv2.warpAffine(img,M,(rows,cols))`</b>即可完成基本的`affine transform `
 ---
 ## Affine Matrix
 
