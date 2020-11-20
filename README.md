@@ -1,16 +1,28 @@
+本文是在完成图像处理与图像识别课程第六次作业过程中的一些知识点总结，主要包括以下两部分：
+
+- 课后作业
+- 两图看懂Forward Warping和Inverse Warping
+- OpenCV的相关实现
+
+
+# 课后作业
+
 ## 证明题
 
-* 仿射变换(`Affine Transformation`)中平行线变换后仍然是平行线
+* 仿射变换(`Affine Transformation`)中平行线变换后仍然是平行线。
 
   设`AB∥CD，A′，B′，C′，D′`分别是`A,B，C,D`经过某个仿射变换后的像。假设`A′B′`与`C′D'`不平行，则由于它们在同一个平面上，因此它们有公共点`P′`，所以点`P′`的原像`P`既在直线`AB`上，又在直线`CD`上。这与`AB∥CD`的前提矛盾，因此`A′B′∥C′D′`。
----
 
 ## 编程题
 
-* 通过实验对比正向变换(`Forward warping`)与反向变换（`inverse warping`）对图像变形/扭曲(`Image warps`)结果的不同，且总结正向变换的缺点可能有哪些
+* 通过实验对比正向变换(`Forward warping`)与反向变换（`inverse warping`）对图像变形/扭曲(`Image warps`)结果的不同，且总结正向变换的缺点可能有哪些。
 
-  在当前目录下运行`image_warping.py`即可得到正向变换与反射变换的结果。结果保存为当前目录下的`forward_warp_vs_inverse_warp.png`。程序使用`matplotlib`画出的1,2,3,4四个子图分别为原图，正向变换的结果，原图，反向变换的结果。
+  注：pts1 = np.float32([[50,50],[200,50],[50,200]])，pts2 = np.float32([[10,100],[200,50],[100,250]])，以pts1->pts2的变换矩阵为对lena.jpg扭曲所需的变换关系。
 
+  
+
+  在当前目录下运行`image_warping.py`即可得到正向变换与反射变换的结果。结果保存为当前目录下的`forward_warp_vs_inverse_warp.png`。程序使用`matplotlib`画出的1,2,3,4四个子图分别为原图，正向变换的结果，原图，反向变换的结果。其中红色的点为pts1，蓝色的点为pts2。
+  
   如下图所示，可以明显的看出正向变换的结果产生了大量空洞，并且在实现过程中会有像素的重叠，使`image warping`的结果不理想，而反向变换的图像则不会产生这种问题。
 
 <div align=center>
@@ -18,26 +30,35 @@
 </div>
 
 ---
-## 两张图片看懂Forward Warping和Inverse Warping
+# 两图看懂Forward Warping和Inverse Warping
 
-### Forward Warping
+## Forward Warping
 <div align=center>
 <img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/forward_warping_implement.png">
 </div>
 
 * **Forward Warping**的原理：遍历`source image`中的每个点`p_source`，乘以从`source image`到`destination image`的`affine matrix`，将其投影到`destination image`中得到`p_destination`，如果`p_destination`的坐标不是整数，则进行四舍五入取整，这必然会产生问题：`destination image`中有的位置没有从`source image`中投影过来的点，有的位置有多个从`source image`中投影过来的点，所以会产生很多空洞，产生类似波纹的效果
 
-### Inverse Warping
+## Inverse Warping
 <div align=center>
 <img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/inverse_warping_implement.png">
 </div>
 
 * **Inverse Warping**的原理：遍历`destination image`中的每个点`p_destination`，乘以`destination image`到`source image`的`affine matrix`，得这个点在`source image`中的对应点`p_source`，令`p_destination`的像素值等于`p_source`的值，如果`p_source`的坐标不是整数，则采用**插值逼近**的方法进行近似，因此不会产生的`Forward Warping`的问题
 
+## 补充内容——Affine Matrix
+
+<div align=center>
+<img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/affine_matrix.png">
+</div>
+
 ---
+# OpenCV的相关实现
+
 ## OpenCV中的`warpAffine`函数
 
 * 由下图中列出的公式可知，**OpenCV**中的**warpAffine **的实现是基于**Inverse Warping**的
+
 <div align=center>
 <img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/opencv-doc-warpAffine.png">
 </div>
@@ -60,17 +81,8 @@
 
 * 一般情况下<b>`cv2.warpAffine(img,M,(rows,cols))`</b>即可完成基本的`affine transform `
 ---
-## Affine Matrix
 
-### Affine Matrix的定义以及逆存在的条件
-
-
-
-<div align=center>
-<img src="https://raw.githubusercontent.com/vitalemonate/Image-Warping/main/pictures/affine_matrix.png">
-</div>
-
-### OpenCV中的getAffineTransform函数
+## OpenCV中的getAffineTransform函数
 
 * 官方文档——函数接口
 
@@ -104,7 +116,7 @@
   ```
 
 
-### OpenCV的invertAffineTransform函数
+## OpenCV的invertAffineTransform函数
 
 上一节提到在`OpenCV`的**warpAffine**函数中如果**WARP_INVERSE_MAP**没有被指定时，在函数内部先要对`Affine Matrix`求逆，下面介绍使用`OpenCV`的 `invertAffineTransform`函数求`Affine Matrix`的逆的内容
 
